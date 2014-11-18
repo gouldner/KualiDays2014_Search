@@ -1,0 +1,45 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<!-- UH KC-326 --> 
+	<!-- KC-530 --> 
+	<bean id="Organization" parent="Organization-parentBean">
+         <property name="attributes">
+			<list merge="true">
+				<ref bean="Organization-organizationSearchInput" />
+			</list>
+		</property>  
+    </bean>
+    
+    <bean id="Organization-organizationSearchInput" parent="Organization-organizationSearchInput-parentBean" />
+
+    <bean id="Organization-organizationSearchInput-parentBean" abstract="true" parent="AttributeDefinition">
+      <property name="name" value="organizationSearchInput" />
+      <property name="forceUppercase" value="false" />
+      <property name="label" value="Performance Site Search (Address)" />
+      <property name="shortLabel" value="Performance Site Search" />
+      <property name="maxLength" value="200" />
+      <property name="validationPattern" >
+        <bean parent="AnyCharacterValidationPattern"
+              p:allowWhitespace="true" />
+      </property>
+      <property name="control" >
+        <bean parent="TextareaControlDefinition"
+              p:rows="5"
+              p:cols="40" />
+      </property>
+      <property name="summary" value="Performance Site Search" />
+      <property name="description" value="Organization SearchInput Data to be sent to solr." />
+    </bean>
+    
+    
+	<bean id="Organization-lookupDefinition" parent="Organization-lookupDefinition-parentBean">
+		<property name="lookupableID" value="uhOrganizationLookupable"/>
+		<property name="lookupFields">
+      		<list>
+      			<bean p:attributeName="organizationSearchInput" parent="FieldDefinition"/>
+      		</list>
+      	</property>	
+	</bean>	
+</beans>
